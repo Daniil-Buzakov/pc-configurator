@@ -1,25 +1,29 @@
 // Инициализация VK Bridge
-let vkBridge = null;
-
-try {
-    vkBridge = vkBridge.send('VKWebAppInit');
-    console.log('VK Bridge initialized');
-} catch(e) {
-    console.log('VK Bridge not available');
+function initVK() {
+    try {
+        if (window.VKWebAppBridge) {
+            window.VKWebAppBridge.send('VKWebAppInit');
+            console.log('VK Bridge initialized');
+        } else {
+            console.log('VK Bridge not available, running in browser mode');
+        }
+    } catch(e) {
+        console.log('VK Bridge error:', e);
+    }
 }
 
-// Получение данных пользователя (если доступно)
+// Получение данных пользователя
 async function getUserInfo() {
     try {
         if (window.VKWebAppBridge) {
-            const user = await VKWebAppBridge.send('VKWebAppGetUserInfo');
+            const user = await window.VKWebAppBridge.send('VKWebAppGetUserInfo');
             if (user && user.first_name) {
                 document.getElementById('userGreeting').textContent = 
                     `Привет, ${user.first_name}! Собери свой идеальный компьютер`;
             }
         }
     } catch(e) {
-        console.log('Cannot get user info');
+        console.log('Cannot get user info:', e);
     }
 }
 
@@ -37,7 +41,7 @@ function calculatePrice() {
         if (selectedOption.value) {
             const price = parseInt(selectedOption.dataset.price);
             totalPrice += price;
-            configSummary.push(`${selectedOption.text}`);
+            configSummary.push(selectedOption.text);
         } else {
             allSelected = false;
         }
@@ -51,11 +55,9 @@ function calculatePrice() {
         return;
     }
 
-    // Показываем результат
     document.getElementById('totalPrice').textContent = 
         totalPrice.toLocaleString('ru-RU') + ' ₽';
     
-    // Показываем сводку
     const summaryDiv = document.getElementById('configSummary');
     summaryDiv.innerHTML = configSummary.map(item => 
         `<div>✓ ${item}</div>`
@@ -63,7 +65,6 @@ function calculatePrice() {
 
     resultDiv.classList.remove('hidden');
     
-    // Сохраняем данные для шаринга
     window.currentConfig = {
         totalPrice: totalPrice,
         summary: configSummary
@@ -78,12 +79,10 @@ async function shareConfig() {
 
     try {
         if (window.VKWebAppBridge) {
-            // Пытаемся использовать VK Bridge для шаринга
-            await VKWebAppBridge.send('VKWebAppShare', {
+            await window.VKWebAppBridge.send('VKWebAppShare', {
                 link: message
             });
         } else {
-            // Fallback для обычного браузера
             prompt('Скопируйте вашу конфигурацию:', message);
         }
     } catch(e) {
@@ -94,14 +93,18 @@ async function shareConfig() {
 
 // Привязываем обработчики событий
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация
+    initVK();
     getUserInfo();
     
-    // Кнопка расчета
-    document.getElementById('calculateBtn').addEventListener('click', calculatePrice);
+    const calcBtn = document.getElementById('calculateBtn');
+    if (calcBtn) {
+        calcBtn.addEventListener('click', calculatePrice);
+    }
     
-    // Кнопка "Поделиться"
-    document.getElementById('shareBtn').addEventListener('click', shareConfig);
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', shareConfig);
+    }
     
     console.log('Конфигуратор ПК загружен!');
 });

@@ -2,7 +2,7 @@
 let vkBridge = null;
 
 try {
-    vkBridge = new VKWebAppBridge();
+    vkBridge = vkBridge.send('VKWebAppInit');
     console.log('VK Bridge initialized');
 } catch(e) {
     console.log('VK Bridge not available');

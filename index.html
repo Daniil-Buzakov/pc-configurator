@@ -1,85 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конфигуратор ПК</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    <title>Test</title>
 </head>
 <body>
-    <div class="app">
-        <header class="header">
-            <h1>🖥️ Конфигуратор ПК</h1>
-            <p id="userGreeting">Собери свой идеальный компьютер</p>
-        </header>
-
-        <div class="configurator">
-            <!-- Процессор -->
-            <div class="component-group">
-                <h2>Процессор (CPU)</h2>
-                <select id="cpu" class="component-select">
-                    <option value="">Выберите процессор</option>
-                    <option value="i5-12400f" data-price="15000">Intel Core i5-12400F - 15 000 ₽</option>
-                    <option value="i7-12700k" data-price="28000">Intel Core i7-12700K - 28 000 ₽</option>
-                    <option value="ryzen5-5600x" data-price="16000">AMD Ryzen 5 5600X - 16 000 ₽</option>
-                    <option value="ryzen7-5800x" data-price="25000">AMD Ryzen 7 5800X - 25 000 ₽</option>
-                </select>
-            </div>
-
-            <!-- Видеокарта -->
-            <div class="component-group">
-                <h2>Видеокарта (GPU)</h2>
-                <select id="gpu" class="component-select">
-                    <option value="">Выберите видеокарту</option>
-                    <option value="rtx3060" data-price="30000">NVIDIA RTX 3060 - 30 000 ₽</option>
-                    <option value="rtx4070" data-price="60000">NVIDIA RTX 4070 - 60 000 ₽</option>
-                    <option value="rx6700xt" data-price="35000">AMD RX 6700 XT - 35 000 ₽</option>
-                    <option value="rx7800xt" data-price="55000">AMD RX 7800 XT - 55 000 ₽</option>
-                </select>
-            </div>
-
-            <!-- Оперативная память -->
-            <div class="component-group">
-                <h2>Оперативная память (RAM)</h2>
-                <select id="ram" class="component-select">
-                    <option value="">Выберите память</option>
-                    <option value="16gb" data-price="5000">16GB DDR4 - 5 000 ₽</option>
-                    <option value="32gb" data-price="9000">32GB DDR4 - 9 000 ₽</option>
-                    <option value="64gb" data-price="20000">64GB DDR5 - 20 000 ₽</option>
-                </select>
-            </div>
-
-            <!-- Накопитель -->
-            <div class="component-group">
-                <h2>Накопитель (Storage)</h2>
-                <select id="storage" class="component-select">
-                    <option value="">Выберите накопитель</option>
-                    <option value="ssd512" data-price="4000">SSD 512GB - 4 000 ₽</option>
-                    <option value="ssd1tb" data-price="7000">SSD 1TB - 7 000 ₽</option>
-                    <option value="nvme2tb" data-price="15000">NVMe 2TB - 15 000 ₽</option>
-                </select>
-            </div>
-
-            <!-- Кнопка расчета -->
-            <button id="calculateBtn" class="calculate-btn">
-                Рассчитать стоимость
-            </button>
-
-            <!-- Результат -->
-            <div id="result" class="result hidden">
-                <h2>Итоговая стоимость:</h2>
-                <div class="total-price" id="totalPrice">0 ₽</div>
-                
-                <div class="config-summary" id="configSummary"></div>
-                
-                <button id="shareBtn" class="share-btn">
-                    📤 Поделиться сборкой
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+    <h1>Тест VK Mini App</h1>
+    <p>Если вы видите этот текст, приложение работает!</p>
 </body>
 </html>

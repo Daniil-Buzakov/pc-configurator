@@ -657,9 +657,6 @@
     </div>
 
     <script>
-        // ID приложения VK
-        const APP_ID = '54744057';
-        
         // Ждем загрузку DOM
         document.addEventListener('DOMContentLoaded', function() {
             console.log('PC Builder App starting...');
@@ -812,6 +809,8 @@
             const menu = document.getElementById(`menu-${componentId}`);
             const searchInput = document.getElementById(`search-${componentId}`);
             const optionsDiv = document.getElementById(`options-${componentId}`);
+            const buttonText = document.getElementById(`button-text-${componentId}`);
+            const arrow = document.getElementById(`arrow-${componentId}`);
             
             // Открытие/закрытие дропдауна
             button.addEventListener('click', function(e) {
@@ -823,8 +822,10 @@
                     closeDropdown(componentId);
                 } else {
                     openDropdown(componentId);
+                    // Очищаем поиск при открытии
                     searchInput.value = '';
                     filterOptions(componentId, '');
+                    // Фокусируемся на поиске
                     setTimeout(() => searchInput.focus(), 100);
                 }
             });
@@ -903,6 +904,7 @@
                 }
             });
             
+            // Показываем сообщение, если ничего не найдено
             let emptyMessage = optionsDiv.querySelector('.dropdown-empty');
             if (!emptyMessage) {
                 emptyMessage = document.createElement('div');
@@ -924,19 +926,25 @@
             const optionsDiv = document.getElementById(`options-${componentId}`);
             const optionData = JSON.parse(option.dataset.componentData);
             
+            // Обновляем текст кнопки
             buttonText.textContent = optionData.name;
             buttonText.classList.remove('dropdown-button-placeholder');
             
+            // Убираем выделение со всех опций
             optionsDiv.querySelectorAll('.dropdown-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
+            // Выделяем выбранную опцию
             option.classList.add('selected');
             
+            // Закрываем дропдаун
             closeDropdown(componentId);
             
+            // Обновляем характеристики
             updateSpecsInfo();
             
+            // Сохраняем выбранный компонент
             window.selectedComponents = window.selectedComponents || {};
             window.selectedComponents[componentId] = optionData;
         }
@@ -1007,6 +1015,7 @@
             
             const selected = window.selectedComponents || {};
             
+            // Проверка CPU и материнской платы
             if (selected.cpu && selected.motherboard) {
                 if (selected.cpu.socket !== selected.motherboard.socket) {
                     issues.push({
@@ -1017,6 +1026,7 @@
                 }
             }
             
+            // Проверка материнской платы и корпуса
             if (selected.motherboard && selected.case) {
                 if (!selected.case.formFactors.includes(selected.motherboard.formFactor)) {
                     issues.push({
@@ -1027,6 +1037,7 @@
                 }
             }
             
+            // Проверка оперативной памяти
             if (selected.ram && selected.motherboard) {
                 if (selected.ram.type !== selected.motherboard.memoryType) {
                     issues.push({
@@ -1037,6 +1048,7 @@
                 }
             }
             
+            // Проверка видеокарты и корпуса
             if (selected.gpu && selected.case) {
                 if (selected.gpu.length > selected.case.maxGpuLength) {
                     issues.push({
@@ -1047,6 +1059,7 @@
                 }
             }
             
+            // Проверка блока питания
             if (selected.psu && selected.cpu && selected.gpu) {
                 const totalTdp = selected.cpu.tdp + selected.gpu.tdp + 100;
                 
@@ -1188,49 +1201,21 @@
         async function shareConfig() {
             if (!window.currentConfig) return;
             
-            let message = `Моя сборка ПК:\n\n`;
-            message += window.currentConfig.summary.map(item => `• ${item}`).join('\n');
-            message += `\n\nСовместимость: ${window.currentConfig.score} баллов`;
-            message += `\nИтого: ${formatPrice(window.currentConfig.totalPrice)}`;
-            message += `\n\n ✇ Собрано с помощью термопаст.рф`;
-            
-            console.log('Sharing message:', message);
+            let message = `🖥️ Моя сборка ПК:\n\n${window.currentConfig.summary.join('\n')}\n\n`;
+            message += `✅ Совместимость: ${window.currentConfig.score} баллов\n`;
+            message += `💰 Итого: ${formatPrice(window.currentConfig.totalPrice)}`;
             
             try {
                 if (typeof vkBridge !== 'undefined') {
-                    console.log('VK Bridge available, trying to share');
-                    
-                    // Открываем окно отправки сообщения
-                    const result = await vkBridge.send('VKWebAppShowWallPostBox', {
-                        message: message,
-                        attachments: ''
+                    await vkBridge.send('VKWebAppShare', {
+                        link: message
                     });
-                    
-                    console.log('Share result:', result);
-                    
                 } else {
-                    console.log('Not in VK, opening browser share');
-                    const shareUrl = `https://vk.com/share.php?text=${encodeURIComponent(message)}`;
-                    window.open(shareUrl, '_blank', 'width=600,height=400');
-                }
-            } catch(e) {
-                console.error('Share error:', e);
-                
-                // Фолбэк - копирование в буфер
-                try {
-                    if (typeof vkBridge !== 'undefined') {
-                        await vkBridge.send('VKWebAppCopyText', {
-                            text: message
-                        });
-                        alert('Текст скопирован! Вставьте его в сообщение.');
-                    } else {
-                        await navigator.clipboard.writeText(message);
-                        alert('Конфигурация скопирована в буфер обмена!');
-                    }
-                } catch(e2) {
-                    console.error('Copy error:', e2);
                     prompt('Скопируйте вашу конфигурацию:', message);
                 }
+            } catch(e) {
+                console.log('Share error:', e);
+                prompt('Скопируйте вашу конфигурацию:', message);
             }
         }
     </script>

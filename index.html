@@ -81,14 +81,42 @@
             z-index: 1;
         }
 
-        .header-icon {
-            margin-bottom: 16px;
+        .logo-container {
+            margin-bottom: 20px;
             animation: float 3s ease-in-out infinite;
+            display: inline-block;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+            padding: 8px;
+            animation: logoGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            }
+            50% { 
+                box-shadow: 0 8px 32px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .logo-image:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
         }
 
         .header h1 {
@@ -181,19 +209,11 @@
             box-shadow: 0 0 0 4px var(--primary-light);
         }
 
-        .component-select:has(option:checked:not([value=""])) {
-            border-color: var(--primary);
-            background-color: var(--primary-light);
-        }
-
         .specs-info {
             font-size: 12px;
             color: var(--text-secondary);
             margin-top: 6px;
             padding-left: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         /* Buttons */
@@ -474,6 +494,12 @@
                 font-size: 24px;
             }
 
+            .logo-image {
+                width: 60px;
+                height: 60px;
+                border-radius: 15px;
+            }
+
             .config-section {
                 padding: 16px;
                 border-radius: 20px;
@@ -499,20 +525,8 @@
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <div class="header-icon">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="1.5"/>
-                        <rect x="9" y="9" width="6" height="6" stroke="white" stroke-width="1.5"/>
-                        <circle cx="12" cy="12" r="1.5" fill="white"/>
-                        <path d="M9 1L9 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M15 1L15 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M9 20L9 23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M15 20L15 23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M20 9L23 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M20 14L23 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M1 9L4 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M1 14L4 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
+                <div class="logo-container">
+                    <img src="logo-icon.png" alt="Logo" class="logo-image">
                 </div>
                 <h1 id="userGreeting">Собери свой идеальный ПК</h1>
                 <p>Выберите комплектующие и проверьте совместимость</p>

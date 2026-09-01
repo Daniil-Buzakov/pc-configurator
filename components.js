@@ -3,7 +3,7 @@
 const componentsData = {
     cpus: [
         {
-            id: 'intel-i5-12400f',
+            id: 'CPU1',
             name: 'Intel Core i5-12400F',
             price: 18990,
             socket: 'LGA1700',
@@ -12,7 +12,7 @@ const componentsData = {
             integratedGraphics: false
         },
         {
-            id: 'intel-i7-12700k',
+            id: 'CPU2',
             name: 'Intel Core i7-12700K',
             price: 31990,
             socket: 'LGA1700',
@@ -21,7 +21,7 @@ const componentsData = {
             integratedGraphics: true
         },
         {
-            id: 'amd-ryzen-5-5600x',
+            id: 'CPU3',
             name: 'AMD Ryzen 5 5600X',
             price: 15990,
             socket: 'AM4',
@@ -30,7 +30,7 @@ const componentsData = {
             integratedGraphics: false
         },
         {
-            id: 'amd-ryzen-7-5800x3d',
+            id: 'CPU4',
             name: 'AMD Ryzen 7 5800X3D',
             price: 28990,
             socket: 'AM4',
@@ -43,7 +43,7 @@ const componentsData = {
     
     motherboards: [
         {
-            id: 'msi-b660m',
+            id: 'MB1',
             name: 'MSI B660M-A PRO',
             price: 9990,
             socket: 'LGA1700',
@@ -51,7 +51,7 @@ const componentsData = {
             memoryType: 'DDR4'
         },
         {
-            id: 'asus-z690',
+            id: 'MB2',
             name: 'ASUS ROG STRIX Z690-A',
             price: 18990,
             socket: 'LGA1700',
@@ -59,7 +59,7 @@ const componentsData = {
             memoryType: 'DDR4'
         },
         {
-            id: 'gigabyte-b550',
+            id: 'MB3',
             name: 'Gigabyte B550 AORUS ELITE',
             price: 11990,
             socket: 'AM4',
@@ -71,21 +71,21 @@ const componentsData = {
     
     rams: [
         {
-            id: 'corsair-16gb',
+            id: 'RAM1',
             name: 'Corsair Vengeance LPX 16GB',
             price: 6990,
             type: 'DDR4',
             speed: 3200
         },
         {
-            id: 'kingston-32gb',
+            id: 'RAM2',
             name: 'Kingston Fury Beast 32GB',
             price: 12990,
             type: 'DDR4',
             speed: 3600
         },
         {
-            id: 'gskill-16gb',
+            id: 'RAM3',
             name: 'G.Skill Trident Z 16GB',
             price: 8990,
             type: 'DDR4',
@@ -96,51 +96,58 @@ const componentsData = {
     
     gpus: [
         {
-            id: 'rtx-3060',
-            name: 'NVIDIA RTX 3060',
+            id: 'GPU1',
+            name: 'RTX 3060',
             price: 32990,
             length: 242,
             tdp: 170
         },
         {
-            id: 'rtx-3080',
-            name: 'NVIDIA RTX 3080',
+            id: 'GPU2',
+            name: 'RTX 3080',
             price: 69990,
             length: 285,
             tdp: 320
         },
         {
-            id: 'rx-6700xt',
+            id: 'GPU3',
             name: 'AMD RX 6700 XT',
             price: 34990,
             length: 267,
             tdp: 230
         },
         {
-            id: 'gtx-1060',
-            name: 'NVIDIA GeForce GTX 1060',
+            id: 'GPU4',
+            name: 'GeForce GTX 1060',
             price: 12990,
             length: 250,
             tdp: 120
+        },
+        {
+            id: 'GPU5',
+            name: 'GeForce RTX 2060',
+            price: 24500,
+            length: 228,
+            tdp: 175
         }
         // Добавляйте новые видеокарты здесь
     ],
     
     psus: [
         {
-            id: 'corsair-650',
+            id: 'PSU1',
             name: 'Corsair RM650x',
             price: 7990,
             wattage: 650
         },
         {
-            id: 'bequiet-750',
+            id: 'PSU2',
             name: 'be quiet! Straight Power 11 750W',
             price: 10990,
             wattage: 750
         },
         {
-            id: 'seasonic-850',
+            id: 'PSU3',
             name: 'Seasonic Focus GX-850',
             price: 13990,
             wattage: 850
@@ -150,21 +157,21 @@ const componentsData = {
     
     cases: [
         {
-            id: 'nzxt-h510',
+            id: 'CASE1',
             name: 'NZXT H510',
             price: 6990,
             maxGpuLength: 381,
             formFactors: ['ATX', 'Micro-ATX', 'Mini-ITX']
         },
         {
-            id: 'fractal-meshify',
+            id: 'CASE2',
             name: 'Fractal Design Meshify C',
             price: 8990,
             maxGpuLength: 315,
             formFactors: ['ATX', 'Micro-ATX', 'Mini-ITX']
         },
         {
-            id: 'coolermaster-q300l',
+            id: 'CASE3',
             name: 'Cooler Master MasterBox Q300L',
             price: 3990,
             maxGpuLength: 360,

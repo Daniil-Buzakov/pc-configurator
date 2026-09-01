@@ -9,7 +9,23 @@
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
     
     <style>
-        /* Ваши стили здесь */
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --primary-light: #ede9fe;
+            --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            --background: #f5f3ff;
+            --white: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,232 +33,518 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--background);
             min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.5;
         }
 
         .app-container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            min-height: 100vh;
         }
 
+        /* Header */
         .header {
-            background: linear-gradient(135deg, #2688eb 0%, #1a6ec4 100%);
+            background: var(--primary-gradient);
             color: white;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 20px;
+            padding: 32px 24px;
+            border-radius: 24px;
+            margin-bottom: 24px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-10%, -10%); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-icon {
+            margin-bottom: 16px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 700;
             margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .header p {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 15px;
+            opacity: 0.95;
+            font-weight: 400;
         }
 
+        /* Sections */
         .config-section {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 24px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
         }
 
-        .config-section h2 {
-            color: #333;
-            margin-bottom: 20px;
+        .config-section:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
             font-size: 20px;
+            font-weight: 700;
         }
 
+        .section-title svg {
+            flex-shrink: 0;
+        }
+
+        /* Component Selector */
         .component-selector {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .component-label {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-weight: 600;
-            color: #555;
-            margin-bottom: 6px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
             font-size: 14px;
+        }
+
+        .component-label svg {
+            flex-shrink: 0;
         }
 
         .component-select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             font-size: 14px;
-            background: white;
+            color: var(--text-primary);
+            background: var(--white);
             cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%237c3aed'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .component-select:hover {
+            border-color: var(--primary);
         }
 
         .component-select:focus {
             outline: none;
-            border-color: #2688eb;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .component-select:has(option:checked:not([value=""])) {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
         }
 
         .specs-info {
             font-size: 12px;
-            color: #666;
-            margin-top: 4px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            padding-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
+        /* Buttons */
         .button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 28px;
         }
 
         .btn {
             flex: 1;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn-primary {
-            background: #2688eb;
+            background: var(--primary-gradient);
             color: white;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+            transform: translateY(-2px);
         }
 
         .btn-primary:active {
-            background: #1a6ec4;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+            transform: translateY(0);
         }
 
         .btn-secondary {
-            background: #f0f2f5;
-            color: #333;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
         }
 
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
+        /* Result Section */
         .result-section {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: var(--white);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hidden {
             display: none;
         }
 
+        /* Compatibility Score */
         .compatibility-score {
             text-align: center;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #f5f3ff 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
         .score-circle {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px;
+            margin: 0 auto 16px;
             color: white;
             font-weight: bold;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .score-number {
-            font-size: 32px;
+            font-size: 40px;
+            font-weight: 800;
+            line-height: 1;
         }
 
         .score-label {
-            font-size: 12px;
-            opacity: 0.9;
+            font-size: 13px;
+            opacity: 0.95;
+            margin-top: 4px;
         }
 
         .score-status {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
 
+        .score-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Issues */
         .issues-container {
-            margin-top: 20px;
+            margin-top: 24px;
+        }
+
+        .issues-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .issue-card {
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
             font-size: 14px;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .issue-card:hover {
+            transform: translateX(4px);
         }
 
         .issue-error {
-            background: #ffe6e6;
-            border-left: 4px solid #f44336;
-            color: #721c24;
+            background: #fef2f2;
+            border-left: 4px solid var(--error);
+            color: #991b1b;
         }
 
         .issue-warning {
-            background: #fff3e0;
-            border-left: 4px solid #ff9800;
-            color: #856404;
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            color: #92400e;
         }
 
         .issue-success {
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            color: #155724;
+            background: #ecfdf5;
+            border-left: 4px solid var(--success);
+            color: #065f46;
+            text-align: center;
+            padding: 20px;
+            font-weight: 600;
         }
 
+        .issue-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .issue-message {
+            margin-left: 28px;
+            opacity: 0.9;
+        }
+
+        /* Price Summary */
         .price-summary {
             text-align: center;
-            margin-top: 20px;
-            padding: 20px;
-            background: #f0f8ff;
-            border-radius: 12px;
+            margin-top: 28px;
+            padding: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .price-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
         }
 
         .total-price {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2688eb;
-            margin: 10px 0;
+            font-size: 36px;
+            font-weight: 800;
+            margin: 8px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .config-summary {
-            margin-top: 12px;
+            margin-top: 16px;
             text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
         }
 
-        .config-summary div {
-            padding: 6px 0;
-            color: #555;
+        .config-item {
+            padding: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .check-icon {
+            color: #a78bfa;
+            flex-shrink: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .app-container {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 24px 16px;
+                border-radius: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .config-section {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .result-section {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .total-price {
+                font-size: 30px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
+        <!-- Header -->
         <div class="header">
-            <h1 id="userGreeting">Собери свой идеальный ПК</h1>
-            <p>Выберите комплектующие и проверьте совместимость</p>
+            <div class="header-content">
+                <div class="header-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="1.5"/>
+                        <rect x="9" y="9" width="6" height="6" stroke="white" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="1.5" fill="white"/>
+                        <path d="M9 1L9 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M15 1L15 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M9 20L9 23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M15 20L15 23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M20 9L23 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M20 14L23 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M1 9L4 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M1 14L4 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h1 id="userGreeting">Собери свой идеальный ПК</h1>
+                <p>Выберите комплектующие и проверьте совместимость</p>
+            </div>
         </div>
 
+        <!-- Config Section -->
         <div class="config-section">
-            <h2>Комплектующие</h2>
+            <div class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#7c3aed" stroke-width="1.5"/>
+                    <path d="M19.4 15C19.2669 15.3016 19.2272 15.6362 19.286 15.9606C19.3448 16.285 19.4995 16.5843 19.73 16.82L19.79 16.88C20.076 17.1687 20.2965 17.5166 20.4364 17.8993C20.5764 18.2819 20.6328 18.69 20.6017 19.0962C20.5707 19.5024 20.4529 19.8967 20.2564 20.2517C20.0599 20.6067 19.7893 20.9138 19.4634 21.1522C19.1375 21.3907 18.7641 21.555 18.3691 21.6345C17.9742 21.714 17.5668 21.7067 17.175 21.6132C16.7833 21.5197 16.4167 21.3423 16.1 21.09L16.03 21.03C15.7942 20.8034 15.4955 20.6525 15.1716 20.5962C14.8477 20.5399 14.5123 20.5806 14.21 20.71C13.904 20.8509 13.6483 21.0795 13.4731 21.367C13.2978 21.6546 13.2104 21.9887 13.22 22.32C13.2282 22.7098 13.1461 23.0958 12.9796 23.4492C12.8131 23.8027 12.5659 24.1149 12.2554 24.3648C11.9448 24.6147 11.5783 24.7965 11.1818 24.8979C10.7852 24.9993 10.3682 25.0182 9.96 24.95C9.5419 24.9068 9.13996 24.7711 8.78438 24.5521C8.4288 24.3331 8.12863 24.0362 7.90532 23.6824C7.68201 23.3286 7.54082 22.9263 7.49157 22.5066C7.44231 22.0869 7.48628 21.6602 7.62 21.26C7.75055 20.9602 7.78942 20.6282 7.73116 20.3063C7.6729 19.9844 7.52017 19.6875 7.29 19.45L7.22 19.39C6.93632 19.1007 6.71832 18.753 6.58002 18.3708C6.44172 17.9886 6.38625 17.5813 6.41729 17.1758C6.44832 16.7703 6.56516 16.3765 6.76 16.02C6.94 15.68 7.02 15.31 7 14.94C6.9567 14.528 6.83279 14.1286 6.63548 13.7648C6.43818 13.4011 6.17145 13.0802 5.85 12.82C5.55622 12.5847 5.31396 12.2935 5.13753 11.9635C4.9611 11.6335 4.85412 11.2713 4.82305 10.8985C4.792 10.5257 4.83747 10.1499 4.95679 9.79382C5.07611 9.43771 5.26683 9.10838 5.51808 8.82445C5.76933 8.54052 6.07616 8.30782 6.42043 8.13916C6.7647 7.97051 7.13945 7.8692 7.52337 7.84079C7.90729 7.81237 8.29278 7.85745 8.66 7.97C9.02 8.11 9.39 8.15 9.75 8.09C10.0829 8.01972 10.3789 7.85183 10.5988 7.60939C10.8187 7.36695 10.952 7.06127 10.98 6.74C11.0233 6.328 10.9196 5.91851 10.6785 5.56051C10.4374 5.20251 10.0665 4.90924 9.6 4.71C9.29664 4.57242 9.04737 4.34124 8.8894 4.05122C8.73143 3.7612 8.6731 3.42798 8.72296 3.1014C8.77282 2.77482 8.92818 2.47273 9.16611 2.23963C9.40403 2.00652 9.71164 1.85499 10.0423 1.80686C10.373 1.75874 10.709 1.81651 11 1.97288C11.3966 2.18186 11.7427 2.48046 12.0092 2.84299C12.2757 3.20551 12.4545 3.62128 12.53 4.05691C12.5844 4.38917 12.7283 4.69883 12.9457 4.95221C13.1632 5.20558 13.4457 5.39301 13.7633 5.49423C14.0809 5.59545 14.4217 5.60672 14.745 5.52693C15.0682 5.44714 15.3613 5.27938 15.59 5.0418C15.8158 4.80425 15.969 4.50402 16.0326 4.18072C16.0962 3.85742 16.0676 3.52344 15.95 3.21414C15.8605 2.84902 15.8786 2.46556 16.0019 2.11153C16.1253 1.75751 16.3483 1.44934 16.6423 1.22677C16.9362 1.00421 17.2872 0.87719 17.6514 0.862382C18.0156 0.847574 18.3763 0.945671 18.6877 1.14435C18.9991 1.34303 19.2474 1.63327 19.4 1.97622V2Z" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Комплектующие
+            </div>
             
+            <!-- CPU -->
             <div class="component-selector">
-                <label class="component-label" for="cpu">Процессор</label>
+                <label class="component-label" for="cpu">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="7" y="7" width="10" height="10" rx="2" stroke="#7c3aed" stroke-width="1.5"/>
+                        <path d="M12 2V7" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 17V22" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M2 12H7" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M17 12H22" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M4.93 4.93L8.46 8.46" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M15.54 15.54L19.07 19.07" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M19.07 4.93L15.54 8.46" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M8.46 15.54L4.93 19.07" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Процессор
+                </label>
                 <select id="cpu" class="component-select">
                     <option value="">Выберите процессор</option>
                     <option value="intel-i5-12400f" data-price="18990" data-socket="LGA1700" data-tdp="65" data-memory="DDR4" data-igpu="false">Intel Core i5-12400F - 18 990 ₽</option>
@@ -253,8 +555,19 @@
                 <div class="specs-info" id="cpu-specs"></div>
             </div>
 
+            <!-- Motherboard -->
             <div class="component-selector">
-                <label class="component-label" for="motherboard">Материнская плата</label>
+                <label class="component-label" for="motherboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="5" width="18" height="14" rx="2" stroke="#7c3aed" stroke-width="1.5"/>
+                        <rect x="6" y="9" width="5" height="6" rx="1" stroke="#7c3aed" stroke-width="1.5"/>
+                        <rect x="13" y="9" width="5" height="3" rx="1" stroke="#7c3aed" stroke-width="1.5"/>
+                        <rect x="13" y="14" width="2" height="1.5" rx="0.5" stroke="#7c3aed" stroke-width="1.5"/>
+                        <rect x="17" y="14" width="1" height="1.5" rx="0.5" stroke="#7c3aed" stroke-width="1.5"/>
+                        <circle cx="8.5" cy="12" r="1" stroke="#7c3aed" stroke-width="1.5"/>
+                    </svg>
+                    Материнская плата
+                </label>
                 <select id="motherboard" class="component-select">
                     <option value="">Выберите материнскую плату</option>
                     <option value="msi-b660m" data-price="9990" data-socket="LGA1700" data-formfactor="Micro-ATX" data-memory="DDR4">MSI B660M-A PRO - 9 990 ₽</option>
@@ -264,8 +577,19 @@
                 <div class="specs-info" id="motherboard-specs"></div>
             </div>
 
+            <!-- RAM -->
             <div class="component-selector">
-                <label class="component-label" for="ram">Оперативная память</label>
+                <label class="component-label" for="ram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="7" width="18" height="10" rx="1.5" stroke="#7c3aed" stroke-width="1.5"/>
+                        <path d="M7 7V5.5C7 4.67 7.67 4 8.5 4H10" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M14 4H15.5C16.33 4 17 4.67 17 5.5V7" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M7 17V18.5C7 19.33 7.67 20 8.5 20H10" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M14 20H15.5C16.33 20 17 19.33 17 18.5V17" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <rect x="7" y="10" width="10" height="4" rx="0.5" stroke="#7c3aed" stroke-width="1.5"/>
+                    </svg>
+                    Оперативная память
+                </label>
                 <select id="ram" class="component-select">
                     <option value="">Выберите память</option>
                     <option value="corsair-16gb" data-price="6990" data-type="DDR4" data-speed="3200">Corsair Vengeance LPX 16GB - 6 990 ₽</option>
@@ -275,8 +599,19 @@
                 <div class="specs-info" id="ram-specs"></div>
             </div>
 
+            <!-- GPU -->
             <div class="component-selector">
-                <label class="component-label" for="gpu">Видеокарта</label>
+                <label class="component-label" for="gpu">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="6" width="18" height="12" rx="2" stroke="#7c3aed" stroke-width="1.5"/>
+                        <circle cx="8" cy="12" r="2" stroke="#7c3aed" stroke-width="1.5"/>
+                        <circle cx="16" cy="12" r="2" stroke="#7c3aed" stroke-width="1.5"/>
+                        <path d="M10 12H14" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 3V6" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 18V21" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Видеокарта
+                </label>
                 <select id="gpu" class="component-select">
                     <option value="">Выберите видеокарту</option>
                     <option value="rtx-3060" data-price="32990" data-length="242" data-tdp="170">NVIDIA RTX 3060 - 32 990 ₽</option>
@@ -286,8 +621,14 @@
                 <div class="specs-info" id="gpu-specs"></div>
             </div>
 
+            <!-- PSU -->
             <div class="component-selector">
-                <label class="component-label" for="psu">Блок питания</label>
+                <label class="component-label" for="psu">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 2L4.5 13.5H11L9.5 22L19 9.5H12.5L13 2Z" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                    Блок питания
+                </label>
                 <select id="psu" class="component-select">
                     <option value="">Выберите блок питания</option>
                     <option value="corsair-650" data-price="7990" data-wattage="650">Corsair RM650x - 7 990 ₽</option>
@@ -297,8 +638,19 @@
                 <div class="specs-info" id="psu-specs"></div>
             </div>
 
+            <!-- Case -->
             <div class="component-selector">
-                <label class="component-label" for="case">Корпус</label>
+                <label class="component-label" for="case">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="4" width="18" height="16" rx="2" stroke="#7c3aed" stroke-width="1.5"/>
+                        <rect x="5" y="6" width="14" height="12" rx="1" stroke="#7c3aed" stroke-width="1.5"/>
+                        <circle cx="17" cy="12" r="0.5" fill="#7c3aed"/>
+                        <circle cx="12" cy="12" r="0.5" fill="#7c3aed"/>
+                        <path d="M12 2V4" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 20V22" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Корпус
+                </label>
                 <select id="case" class="component-select">
                     <option value="">Выберите корпус</option>
                     <option value="nzxt-h510" data-price="6990" data-maxgpu="381" data-formfactors="ATX,Micro-ATX,Mini-ITX">NZXT H510 - 6 990 ₽</option>
@@ -309,16 +661,31 @@
             </div>
 
             <div class="button-group">
-                <button class="btn btn-primary" id="calculateBtn">Проверить</button>
-                <button class="btn btn-secondary" id="shareBtn" disabled>Поделиться</button>
+                <button class="btn btn-primary" id="calculateBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Проверить
+                </button>
+                <button class="btn btn-secondary" id="shareBtn" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8.5 13.5L15.5 17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M15.5 6.5L8.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Поделиться
+                </button>
             </div>
         </div>
 
+        <!-- Result Section -->
         <div class="result-section hidden" id="result">
             <div class="compatibility-score" id="compatibilityScore"></div>
             <div class="issues-container" id="issuesContainer"></div>
             <div class="price-summary">
-                <h3>Итоговая стоимость</h3>
+                <div class="price-title">Итоговая стоимость</div>
                 <div class="total-price" id="totalPrice">0 ₽</div>
                 <div class="config-summary" id="configSummary"></div>
             </div>
@@ -337,8 +704,6 @@
                 vkBridge.send('VKWebAppInit')
                     .then(() => {
                         console.log('VK Bridge initialized successfully');
-                        
-                        // Получаем данные пользователя
                         return vkBridge.send('VKWebAppGetUserInfo');
                     })
                     .then(user => {
@@ -355,14 +720,10 @@
                 console.log('Running in browser mode (no VK Bridge)');
             }
             
-            // Инициализация обработчиков
             initializeEventHandlers();
         });
         
         function initializeEventHandlers() {
-            console.log('Initializing event handlers...');
-            
-            // Обработчики для select
             const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             selects.forEach(selectId => {
                 const select = document.getElementById(selectId);
@@ -371,22 +732,17 @@
                 }
             });
             
-            // Кнопка "Проверить"
             const calcBtn = document.getElementById('calculateBtn');
             if (calcBtn) {
                 calcBtn.addEventListener('click', calculatePrice);
             }
             
-            // Кнопка "Поделиться"
             const shareBtn = document.getElementById('shareBtn');
             if (shareBtn) {
                 shareBtn.addEventListener('click', shareConfig);
             }
-            
-            console.log('Event handlers initialized');
         }
         
-        // Функция обновления характеристик
         function updateSpecsInfo() {
             const components = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             
@@ -423,14 +779,13 @@
                             break;
                     }
                     
-                    specsDiv.textContent = specs.join(' | ');
+                    specsDiv.innerHTML = `<span style="color: #7c3aed;">●</span> ${specs.join(' • ')}`;
                 } else {
                     specsDiv.textContent = '';
                 }
             });
         }
         
-        // Проверка совместимости
         function checkCompatibility() {
             const issues = [];
             const warnings = [];
@@ -449,7 +804,6 @@
             const psuSelected = psu.options[psu.selectedIndex];
             const caseSelected = pcCase.options[pcCase.selectedIndex];
             
-            // Проверка CPU и материнской платы
             if (cpuSelected.value && mbSelected.value) {
                 if (cpuSelected.dataset.socket !== mbSelected.dataset.socket) {
                     issues.push({
@@ -460,7 +814,6 @@
                 }
             }
             
-            // Проверка материнской платы и корпуса
             if (mbSelected.value && caseSelected.value) {
                 const caseFormFactors = caseSelected.dataset.formfactors.split(',');
                 if (!caseFormFactors.includes(mbSelected.dataset.formfactor)) {
@@ -472,7 +825,6 @@
                 }
             }
             
-            // Проверка оперативной памяти
             if (ramSelected.value && mbSelected.value) {
                 if (ramSelected.dataset.type !== mbSelected.dataset.memory) {
                     issues.push({
@@ -483,7 +835,6 @@
                 }
             }
             
-            // Проверка видеокарты и корпуса
             if (gpuSelected.value && caseSelected.value) {
                 const gpuLength = parseInt(gpuSelected.dataset.length);
                 const maxGpuLength = parseInt(caseSelected.dataset.maxgpu);
@@ -497,7 +848,6 @@
                 }
             }
             
-            // Проверка блока питания
             if (psuSelected.value && cpuSelected.value && gpuSelected.value) {
                 const cpuTdp = parseInt(cpuSelected.dataset.tdp);
                 const gpuTdp = parseInt(gpuSelected.dataset.tdp);
@@ -522,7 +872,6 @@
             return { issues, warnings };
         }
         
-        // Расчет стоимости и проверка
         function calculatePrice() {
             const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             let totalPrice = 0;
@@ -554,20 +903,24 @@
             const score = Math.max(0, 100 - (issues.length * 30) - (warnings.length * 10));
             
             const compatibilityScore = document.getElementById('compatibilityScore');
-            let scoreColor, scoreStatus;
+            let scoreColor, scoreStatus, scoreDescription;
             
             if (score >= 90) {
-                scoreColor = '#4caf50';
+                scoreColor = '#10b981';
                 scoreStatus = 'Отличная совместимость!';
+                scoreDescription = 'Все компоненты идеально подходят друг другу';
             } else if (score >= 70) {
-                scoreColor = '#2196f3';
+                scoreColor = '#8b5cf6';
                 scoreStatus = 'Хорошая совместимость';
+                scoreDescription = 'Сборка будет работать стабильно';
             } else if (score >= 50) {
-                scoreColor = '#ff9800';
+                scoreColor = '#f59e0b';
                 scoreStatus = 'Удовлетворительная совместимость';
+                scoreDescription = 'Есть незначительные проблемы';
             } else {
-                scoreColor = '#f44336';
+                scoreColor = '#ef4444';
                 scoreStatus = 'Есть проблемы совместимости';
+                scoreDescription = 'Требуется замена компонентов';
             }
             
             compatibilityScore.innerHTML = `
@@ -576,28 +929,63 @@
                     <span class="score-label">баллов</span>
                 </div>
                 <div class="score-status">${scoreStatus}</div>
+                <div class="score-description">${scoreDescription}</div>
             `;
             
             const issuesContainer = document.getElementById('issuesContainer');
             let issuesHtml = '';
             
             if (issues.length > 0) {
-                issuesHtml += '<h3>Проблемы совместимости:</h3>';
+                issuesHtml += `
+                    <div class="issues-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="9" stroke="#ef4444" stroke-width="1.5"/>
+                            <path d="M12 8V12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="0.5" fill="#ef4444"/>
+                        </svg>
+                        Проблемы совместимости:
+                    </div>
+                `;
                 issues.forEach(issue => {
                     issuesHtml += `
                         <div class="issue-card issue-error">
-                            <strong>${issue.component}:</strong> ${issue.message}
+                            <div class="issue-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L22 20H2L12 2Z" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M12 9V13" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+                                    <circle cx="12" cy="17" r="0.5" fill="#ef4444"/>
+                                </svg>
+                                ${issue.component}
+                            </div>
+                            <div class="issue-message">${issue.message}</div>
                         </div>
                     `;
                 });
             }
             
             if (warnings.length > 0) {
-                issuesHtml += '<h3>Предупреждения:</h3>';
+                issuesHtml += `
+                    <div class="issues-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="9" stroke="#f59e0b" stroke-width="1.5"/>
+                            <path d="M12 8V12" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="0.5" fill="#f59e0b"/>
+                        </svg>
+                        Предупреждения:
+                    </div>
+                `;
                 warnings.forEach(warning => {
                     issuesHtml += `
                         <div class="issue-card issue-warning">
-                            <strong>${warning.component}:</strong> ${warning.message}
+                            <div class="issue-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L22 20H2L12 2Z" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M12 9V13" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+                                    <circle cx="12" cy="17" r="0.5" fill="#f59e0b"/>
+                                </svg>
+                                ${warning.component}
+                            </div>
+                            <div class="issue-message">${warning.message}</div>
                         </div>
                     `;
                 });
@@ -606,7 +994,11 @@
             if (issues.length === 0 && warnings.length === 0) {
                 issuesHtml += `
                     <div class="issue-card issue-success">
-                        ✅ Все компоненты полностью совместимы!
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                            <circle cx="12" cy="12" r="9" stroke="#10b981" stroke-width="1.5"/>
+                            <path d="M8 12L11 15L16 9" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Все компоненты полностью совместимы!
                     </div>
                 `;
             }
@@ -618,7 +1010,13 @@
             
             const summaryDiv = document.getElementById('configSummary');
             summaryDiv.innerHTML = configSummary.map(item => 
-                `<div>✓ ${item}</div>`
+                `<div class="config-item">
+                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9" stroke="#a78bfa" stroke-width="1.5"/>
+                        <path d="M8 12L11 15L16 9" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    ${item}
+                </div>`
             ).join('');
 
             resultDiv.classList.remove('hidden');
@@ -634,7 +1032,6 @@
             document.getElementById('shareBtn').disabled = false;
         }
         
-        // Отправка в VK
         async function shareConfig() {
             if (!window.currentConfig) return;
 

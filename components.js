@@ -115,6 +115,13 @@ const componentsData = {
             price: 34990,
             length: 267,
             tdp: 230
+        },
+        {
+            id: 'gtx-1060',
+            name: 'NVIDIA GeForce GTX 1060',
+            price: 12990,
+            length: 250,
+            tdp: 120
         }
         // Добавляйте новые видеокарты здесь
     ],

@@ -1188,11 +1188,11 @@
         async function shareConfig() {
             if (!window.currentConfig) return;
             
-            let message = `🖥️ Моя сборка ПК:\n\n`;
+            let message = `Моя сборка ПК:\n\n`;
             message += window.currentConfig.summary.map(item => `• ${item}`).join('\n');
-            message += `\n\n✅ Совместимость: ${window.currentConfig.score} баллов`;
-            message += `\n💰 Итого: ${formatPrice(window.currentConfig.totalPrice)}`;
-            message += `\n\n🔧 Собрано с помощью термопаст.рф`;
+            message += `\n\nСовместимость: ${window.currentConfig.score} баллов`;
+            message += `\nИтого: ${formatPrice(window.currentConfig.totalPrice)}`;
+            message += `\n\n ✇ Собрано с помощью термопаст.рф`;
             
             console.log('Sharing message:', message);
             

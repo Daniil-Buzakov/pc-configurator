@@ -8,6 +8,9 @@
     <!-- VK Bridge -->
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
     
+    <!-- Подключаем файл с комплектующими -->
+    <script src="components.js"></script>
+    
     <style>
         :root {
             --primary: #7c3aed;
@@ -443,11 +446,6 @@
             font-size: 14px;
         }
 
-        .check-icon {
-            color: #a78bfa;
-            flex-shrink: 0;
-        }
-
         /* Responsive */
         @media (max-width: 640px) {
             .app-container {
@@ -503,90 +501,14 @@
 
         <!-- Config Section -->
         <div class="config-section">
-            <div class="section-title">
-                Комплектующие
-            </div>
+            <div class="section-title">Комплектующие</div>
             
-            <!-- CPU -->
-            <div class="component-selector">
-                <label class="component-label" for="cpu">Процессор</label>
-                <select id="cpu" class="component-select">
-                    <option value="">Выберите процессор</option>
-                    <option value="intel-i5-12400f" data-price="18990" data-socket="LGA1700" data-tdp="65" data-memory="DDR4" data-igpu="false">Intel Core i5-12400F - 18 990 ₽</option>
-                    <option value="intel-i7-12700k" data-price="31990" data-socket="LGA1700" data-tdp="125" data-memory="DDR4" data-igpu="true">Intel Core i7-12700K - 31 990 ₽</option>
-                    <option value="amd-ryzen-5-5600x" data-price="15990" data-socket="AM4" data-tdp="65" data-memory="DDR4" data-igpu="false">AMD Ryzen 5 5600X - 15 990 ₽</option>
-                    <option value="amd-ryzen-7-5800x3d" data-price="28990" data-socket="AM4" data-tdp="105" data-memory="DDR4" data-igpu="false">AMD Ryzen 7 5800X3D - 28 990 ₽</option>
-                </select>
-                <div class="specs-info" id="cpu-specs"></div>
-            </div>
-
-            <!-- Motherboard -->
-            <div class="component-selector">
-                <label class="component-label" for="motherboard">Материнская плата</label>
-                <select id="motherboard" class="component-select">
-                    <option value="">Выберите материнскую плату</option>
-                    <option value="msi-b660m" data-price="9990" data-socket="LGA1700" data-formfactor="Micro-ATX" data-memory="DDR4">MSI B660M-A PRO - 9 990 ₽</option>
-                    <option value="asus-z690" data-price="18990" data-socket="LGA1700" data-formfactor="ATX" data-memory="DDR4">ASUS ROG STRIX Z690-A - 18 990 ₽</option>
-                    <option value="gigabyte-b550" data-price="11990" data-socket="AM4" data-formfactor="ATX" data-memory="DDR4">Gigabyte B550 AORUS ELITE - 11 990 ₽</option>
-                </select>
-                <div class="specs-info" id="motherboard-specs"></div>
-            </div>
-
-            <!-- RAM -->
-            <div class="component-selector">
-                <label class="component-label" for="ram">Оперативная память</label>
-                <select id="ram" class="component-select">
-                    <option value="">Выберите память</option>
-                    <option value="corsair-16gb" data-price="6990" data-type="DDR4" data-speed="3200">Corsair Vengeance LPX 16GB - 6 990 ₽</option>
-                    <option value="kingston-32gb" data-price="12990" data-type="DDR4" data-speed="3600">Kingston Fury Beast 32GB - 12 990 ₽</option>
-                    <option value="gskill-16gb" data-price="8990" data-type="DDR4" data-speed="4000">G.Skill Trident Z 16GB - 8 990 ₽</option>
-                </select>
-                <div class="specs-info" id="ram-specs"></div>
-            </div>
-
-            <!-- GPU -->
-            <div class="component-selector">
-                <label class="component-label" for="gpu">Видеокарта</label>
-                <select id="gpu" class="component-select">
-                    <option value="">Выберите видеокарту</option>
-                    <option value="rtx-3060" data-price="32990" data-length="242" data-tdp="170">NVIDIA RTX 3060 - 32 990 ₽</option>
-                    <option value="rtx-3080" data-price="69990" data-length="285" data-tdp="320">NVIDIA RTX 3080 - 69 990 ₽</option>
-                    <option value="rx-6700xt" data-price="34990" data-length="267" data-tdp="230">AMD RX 6700 XT - 34 990 ₽</option>
-                </select>
-                <div class="specs-info" id="gpu-specs"></div>
-            </div>
-
-            <!-- PSU -->
-            <div class="component-selector">
-                <label class="component-label" for="psu">Блок питания</label>
-                <select id="psu" class="component-select">
-                    <option value="">Выберите блок питания</option>
-                    <option value="corsair-650" data-price="7990" data-wattage="650">Corsair RM650x - 7 990 ₽</option>
-                    <option value="bequiet-750" data-price="10990" data-wattage="750">be quiet! 750W - 10 990 ₽</option>
-                    <option value="seasonic-850" data-price="13990" data-wattage="850">Seasonic Focus 850W - 13 990 ₽</option>
-                </select>
-                <div class="specs-info" id="psu-specs"></div>
-            </div>
-
-            <!-- Case -->
-            <div class="component-selector">
-                <label class="component-label" for="case">Корпус</label>
-                <select id="case" class="component-select">
-                    <option value="">Выберите корпус</option>
-                    <option value="nzxt-h510" data-price="6990" data-maxgpu="381" data-formfactors="ATX,Micro-ATX,Mini-ITX">NZXT H510 - 6 990 ₽</option>
-                    <option value="fractal-meshify" data-price="8990" data-maxgpu="315" data-formfactors="ATX,Micro-ATX,Mini-ITX">Fractal Meshify C - 8 990 ₽</option>
-                    <option value="coolermaster-q300l" data-price="3990" data-maxgpu="360" data-formfactors="Micro-ATX,Mini-ITX">Cooler Master Q300L - 3 990 ₽</option>
-                </select>
-                <div class="specs-info" id="case-specs"></div>
-            </div>
+            <!-- Здесь будут динамически созданы селекторы -->
+            <div id="componentsContainer"></div>
 
             <div class="button-group">
-                <button class="btn btn-primary" id="calculateBtn">
-                    Проверить
-                </button>
-                <button class="btn btn-secondary" id="shareBtn" disabled>
-                    Поделиться
-                </button>
+                <button class="btn btn-primary" id="calculateBtn">Проверить</button>
+                <button class="btn btn-secondary" id="shareBtn" disabled>Поделиться</button>
             </div>
         </div>
 
@@ -606,6 +528,9 @@
         // Ждем загрузку DOM
         document.addEventListener('DOMContentLoaded', function() {
             console.log('PC Builder App starting...');
+            
+            // Создаем селекторы из components.js
+            createComponentSelectors();
             
             // Инициализация VK Bridge
             if (typeof vkBridge !== 'undefined') {
@@ -632,6 +557,66 @@
             
             initializeEventHandlers();
         });
+        
+        // Функция создания селекторов
+        function createComponentSelectors() {
+            const container = document.getElementById('componentsContainer');
+            
+            const componentTypes = [
+                { id: 'cpu', label: 'Процессор', data: componentsData.cpus },
+                { id: 'motherboard', label: 'Материнская плата', data: componentsData.motherboards },
+                { id: 'ram', label: 'Оперативная память', data: componentsData.rams },
+                { id: 'gpu', label: 'Видеокарта', data: componentsData.gpus },
+                { id: 'psu', label: 'Блок питания', data: componentsData.psus },
+                { id: 'case', label: 'Корпус', data: componentsData.cases }
+            ];
+            
+            componentTypes.forEach(component => {
+                const selectorDiv = document.createElement('div');
+                selectorDiv.className = 'component-selector';
+                
+                const label = document.createElement('label');
+                label.className = 'component-label';
+                label.htmlFor = component.id;
+                label.textContent = component.label;
+                
+                const select = document.createElement('select');
+                select.id = component.id;
+                select.className = 'component-select';
+                
+                // Добавляем пустую опцию
+                const emptyOption = document.createElement('option');
+                emptyOption.value = '';
+                emptyOption.textContent = `Выберите ${component.label.toLowerCase()}`;
+                select.appendChild(emptyOption);
+                
+                // Добавляем опции из данных
+                component.data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${item.name} - ${formatPrice(item.price)}`;
+                    
+                    // Добавляем data-атрибуты
+                    for (const [key, value] of Object.entries(item)) {
+                        if (key !== 'id' && key !== 'name' && key !== 'price') {
+                            option.dataset[key] = Array.isArray(value) ? value.join(',') : value;
+                        }
+                    }
+                    
+                    select.appendChild(option);
+                });
+                
+                const specsDiv = document.createElement('div');
+                specsDiv.className = 'specs-info';
+                specsDiv.id = `${component.id}-specs`;
+                
+                selectorDiv.appendChild(label);
+                selectorDiv.appendChild(select);
+                selectorDiv.appendChild(specsDiv);
+                
+                container.appendChild(selectorDiv);
+            });
+        }
         
         function initializeEventHandlers() {
             const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
@@ -668,10 +653,12 @@
                         case 'cpu':
                             specs.push(`Сокет: ${selectedOption.dataset.socket}`);
                             specs.push(`TDP: ${selectedOption.dataset.tdp}W`);
+                            specs.push(`Память: ${selectedOption.dataset.memorytype}`);
                             break;
                         case 'motherboard':
                             specs.push(`Сокет: ${selectedOption.dataset.socket}`);
                             specs.push(`Форм-фактор: ${selectedOption.dataset.formfactor}`);
+                            specs.push(`Память: ${selectedOption.dataset.memorytype}`);
                             break;
                         case 'ram':
                             specs.push(`Тип: ${selectedOption.dataset.type}`);
@@ -685,7 +672,8 @@
                             specs.push(`Мощность: ${selectedOption.dataset.wattage}W`);
                             break;
                         case 'case':
-                            specs.push(`Макс. GPU: ${selectedOption.dataset.maxgpu}мм`);
+                            specs.push(`Макс. GPU: ${selectedOption.dataset.maxgpulength}мм`);
+                            specs.push(`Форм-факторы: ${selectedOption.dataset.formfactors}`);
                             break;
                     }
                     
@@ -736,10 +724,10 @@
             }
             
             if (ramSelected.value && mbSelected.value) {
-                if (ramSelected.dataset.type !== mbSelected.dataset.memory) {
+                if (ramSelected.dataset.type !== mbSelected.dataset.memorytype) {
                     issues.push({
                         component: 'Оперативная память',
-                        message: `Несовместимый тип памяти: ${ramSelected.dataset.type} vs ${mbSelected.dataset.memory}`,
+                        message: `Несовместимый тип памяти: ${ramSelected.dataset.type} vs ${mbSelected.dataset.memorytype}`,
                         type: 'error'
                     });
                 }
@@ -747,7 +735,7 @@
             
             if (gpuSelected.value && caseSelected.value) {
                 const gpuLength = parseInt(gpuSelected.dataset.length);
-                const maxGpuLength = parseInt(caseSelected.dataset.maxgpu);
+                const maxGpuLength = parseInt(caseSelected.dataset.maxgpulength);
                 
                 if (gpuLength > maxGpuLength) {
                     issues.push({
@@ -793,9 +781,19 @@
                 const selectedOption = select.options[select.selectedIndex];
                 
                 if (selectedOption.value) {
-                    const price = parseInt(selectedOption.dataset.price);
-                    totalPrice += price;
-                    configSummary.push(selectedOption.text.split(' - ')[0]);
+                    // Ищем цену в componentsData
+                    const componentType = selectId === 'case' ? 'cases' : 
+                                          selectId === 'cpu' ? 'cpus' :
+                                          selectId === 'motherboard' ? 'motherboards' :
+                                          selectId === 'ram' ? 'rams' :
+                                          selectId === 'gpu' ? 'gpus' : 'psus';
+                    
+                    const componentData = componentsData[componentType].find(item => item.id === selectedOption.value);
+                    
+                    if (componentData) {
+                        totalPrice += componentData.price;
+                        configSummary.push(componentData.name);
+                    }
                 } else {
                     allSelected = false;
                 }
@@ -879,8 +877,7 @@
             
             issuesContainer.innerHTML = issuesHtml;
             
-            document.getElementById('totalPrice').textContent = 
-                totalPrice.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
             
             const summaryDiv = document.getElementById('configSummary');
             summaryDiv.innerHTML = configSummary.map(item => 
@@ -905,7 +902,7 @@
 
             let message = `🖥️ Моя сборка ПК:\n\n${window.currentConfig.summary.join('\n')}\n\n`;
             message += `✅ Совместимость: ${window.currentConfig.score} баллов\n`;
-            message += `💰 Итого: ${window.currentConfig.totalPrice.toLocaleString('ru-RU')} ₽`;
+            message += `💰 Итого: ${formatPrice(window.currentConfig.totalPrice)}`;
 
             try {
                 if (typeof vkBridge !== 'undefined') {

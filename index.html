@@ -597,11 +597,17 @@
                     option.textContent = `${item.name} - ${formatPrice(item.price)}`;
                     
                     // Добавляем data-атрибуты
-                    for (const [key, value] of Object.entries(item)) {
-                        if (key !== 'id' && key !== 'name' && key !== 'price') {
-                            option.dataset[key] = Array.isArray(value) ? value.join(',') : value;
-                        }
-                    }
+                    if (item.socket) option.dataset.socket = item.socket;
+                    if (item.tdp) option.dataset.tdp = item.tdp;
+                    if (item.memoryType) option.dataset.memoryType = item.memoryType;
+                    if (item.integratedGraphics !== undefined) option.dataset.integratedGraphics = item.integratedGraphics;
+                    if (item.formFactor) option.dataset.formFactor = item.formFactor;
+                    if (item.type) option.dataset.type = item.type;
+                    if (item.speed) option.dataset.speed = item.speed;
+                    if (item.length) option.dataset.length = item.length;
+                    if (item.wattage) option.dataset.wattage = item.wattage;
+                    if (item.maxGpuLength) option.dataset.maxGpuLength = item.maxGpuLength;
+                    if (item.formFactors) option.dataset.formFactors = item.formFactors.join(',');
                     
                     select.appendChild(option);
                 });
@@ -651,29 +657,29 @@
                     
                     switch(componentId) {
                         case 'cpu':
-                            specs.push(`Сокет: ${selectedOption.dataset.socket}`);
-                            specs.push(`TDP: ${selectedOption.dataset.tdp}W`);
-                            specs.push(`Память: ${selectedOption.dataset.memorytype}`);
+                            if (selectedOption.dataset.socket) specs.push(`Сокет: ${selectedOption.dataset.socket}`);
+                            if (selectedOption.dataset.tdp) specs.push(`TDP: ${selectedOption.dataset.tdp}W`);
+                            if (selectedOption.dataset.memoryType) specs.push(`Память: ${selectedOption.dataset.memoryType}`);
                             break;
                         case 'motherboard':
-                            specs.push(`Сокет: ${selectedOption.dataset.socket}`);
-                            specs.push(`Форм-фактор: ${selectedOption.dataset.formfactor}`);
-                            specs.push(`Память: ${selectedOption.dataset.memorytype}`);
+                            if (selectedOption.dataset.socket) specs.push(`Сокет: ${selectedOption.dataset.socket}`);
+                            if (selectedOption.dataset.formFactor) specs.push(`Форм-фактор: ${selectedOption.dataset.formFactor}`);
+                            if (selectedOption.dataset.memoryType) specs.push(`Память: ${selectedOption.dataset.memoryType}`);
                             break;
                         case 'ram':
-                            specs.push(`Тип: ${selectedOption.dataset.type}`);
-                            specs.push(`Частота: ${selectedOption.dataset.speed}MHz`);
+                            if (selectedOption.dataset.type) specs.push(`Тип: ${selectedOption.dataset.type}`);
+                            if (selectedOption.dataset.speed) specs.push(`Частота: ${selectedOption.dataset.speed}MHz`);
                             break;
                         case 'gpu':
-                            specs.push(`Длина: ${selectedOption.dataset.length}мм`);
-                            specs.push(`TDP: ${selectedOption.dataset.tdp}W`);
+                            if (selectedOption.dataset.length) specs.push(`Длина: ${selectedOption.dataset.length}мм`);
+                            if (selectedOption.dataset.tdp) specs.push(`TDP: ${selectedOption.dataset.tdp}W`);
                             break;
                         case 'psu':
-                            specs.push(`Мощность: ${selectedOption.dataset.wattage}W`);
+                            if (selectedOption.dataset.wattage) specs.push(`Мощность: ${selectedOption.dataset.wattage}W`);
                             break;
                         case 'case':
-                            specs.push(`Макс. GPU: ${selectedOption.dataset.maxgpulength}мм`);
-                            specs.push(`Форм-факторы: ${selectedOption.dataset.formfactors}`);
+                            if (selectedOption.dataset.maxGpuLength) specs.push(`Макс. GPU: ${selectedOption.dataset.maxGpuLength}мм`);
+                            if (selectedOption.dataset.formFactors) specs.push(`Форм-факторы: ${selectedOption.dataset.formFactors}`);
                             break;
                     }
                     
@@ -702,6 +708,7 @@
             const psuSelected = psu.options[psu.selectedIndex];
             const caseSelected = pcCase.options[pcCase.selectedIndex];
             
+            // Проверка CPU и материнской платы
             if (cpuSelected.value && mbSelected.value) {
                 if (cpuSelected.dataset.socket !== mbSelected.dataset.socket) {
                     issues.push({
@@ -712,30 +719,33 @@
                 }
             }
             
+            // Проверка материнской платы и корпуса
             if (mbSelected.value && caseSelected.value) {
-                const caseFormFactors = caseSelected.dataset.formfactors.split(',');
-                if (!caseFormFactors.includes(mbSelected.dataset.formfactor)) {
+                const caseFormFactors = caseSelected.dataset.formFactors.split(',');
+                if (!caseFormFactors.includes(mbSelected.dataset.formFactor)) {
                     issues.push({
                         component: 'Материнская плата и корпус',
-                        message: `Корпус не поддерживает форм-фактор ${mbSelected.dataset.formfactor}`,
+                        message: `Корпус не поддерживает форм-фактор ${mbSelected.dataset.formFactor}`,
                         type: 'error'
                     });
                 }
             }
             
+            // Проверка оперативной памяти
             if (ramSelected.value && mbSelected.value) {
-                if (ramSelected.dataset.type !== mbSelected.dataset.memorytype) {
+                if (ramSelected.dataset.type !== mbSelected.dataset.memoryType) {
                     issues.push({
                         component: 'Оперативная память',
-                        message: `Несовместимый тип памяти: ${ramSelected.dataset.type} vs ${mbSelected.dataset.memorytype}`,
+                        message: `Несовместимый тип памяти: ${ramSelected.dataset.type} vs ${mbSelected.dataset.memoryType}`,
                         type: 'error'
                     });
                 }
             }
             
+            // Проверка видеокарты и корпуса
             if (gpuSelected.value && caseSelected.value) {
                 const gpuLength = parseInt(gpuSelected.dataset.length);
-                const maxGpuLength = parseInt(caseSelected.dataset.maxgpulength);
+                const maxGpuLength = parseInt(caseSelected.dataset.maxGpuLength);
                 
                 if (gpuLength > maxGpuLength) {
                     issues.push({
@@ -746,6 +756,7 @@
                 }
             }
             
+            // Проверка блока питания
             if (psuSelected.value && cpuSelected.value && gpuSelected.value) {
                 const cpuTdp = parseInt(cpuSelected.dataset.tdp);
                 const gpuTdp = parseInt(gpuSelected.dataset.tdp);
@@ -771,6 +782,8 @@
         }
         
         function calculatePrice() {
+            console.log('calculatePrice called');
+            
             const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             let totalPrice = 0;
             let configSummary = [];
@@ -778,17 +791,38 @@
 
             selects.forEach(selectId => {
                 const select = document.getElementById(selectId);
+                
+                if (!select) {
+                    console.error(`Select ${selectId} not found`);
+                    return;
+                }
+                
                 const selectedOption = select.options[select.selectedIndex];
                 
-                if (selectedOption.value) {
-                    // Ищем цену в componentsData
-                    const componentType = selectId === 'case' ? 'cases' : 
-                                          selectId === 'cpu' ? 'cpus' :
-                                          selectId === 'motherboard' ? 'motherboards' :
-                                          selectId === 'ram' ? 'rams' :
-                                          selectId === 'gpu' ? 'gpus' : 'psus';
+                if (selectedOption && selectedOption.value) {
+                    // Ищем компонент в данных
+                    let componentData = null;
                     
-                    const componentData = componentsData[componentType].find(item => item.id === selectedOption.value);
+                    switch(selectId) {
+                        case 'cpu':
+                            componentData = componentsData.cpus.find(item => item.id === selectedOption.value);
+                            break;
+                        case 'motherboard':
+                            componentData = componentsData.motherboards.find(item => item.id === selectedOption.value);
+                            break;
+                        case 'ram':
+                            componentData = componentsData.rams.find(item => item.id === selectedOption.value);
+                            break;
+                        case 'gpu':
+                            componentData = componentsData.gpus.find(item => item.id === selectedOption.value);
+                            break;
+                        case 'psu':
+                            componentData = componentsData.psus.find(item => item.id === selectedOption.value);
+                            break;
+                        case 'case':
+                            componentData = componentsData.cases.find(item => item.id === selectedOption.value);
+                            break;
+                    }
                     
                     if (componentData) {
                         totalPrice += componentData.price;

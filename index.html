@@ -2,9 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Конфигуратор ПК</title>
+    
+    <!-- VK Bridge -->
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    
     <style>
+        /* Ваши стили здесь */
         * {
             margin: 0;
             padding: 0;
@@ -15,38 +20,38 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f0f2f5;
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 800px;
+        .app-container {
+            max-width: 600px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         .header {
             background: linear-gradient(135deg, #2688eb 0%, #1a6ec4 100%);
             color: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 8px;
         }
 
         .header p {
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0.9;
         }
 
         .config-section {
             background: white;
             border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
@@ -57,14 +62,14 @@
         }
 
         .component-selector {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .component-label {
             display: block;
             font-weight: 600;
             color: #555;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-size: 14px;
         }
 
@@ -74,10 +79,8 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 14px;
-            color: #333;
             background: white;
             cursor: pointer;
-            transition: border-color 0.3s;
         }
 
         .component-select:focus {
@@ -85,21 +88,16 @@
             border-color: #2688eb;
         }
 
-        .component-select:hover {
-            border-color: #2688eb;
-        }
-
         .specs-info {
             font-size: 12px;
             color: #666;
             margin-top: 4px;
-            padding-left: 4px;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .btn {
@@ -110,7 +108,6 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
         .btn-primary {
@@ -118,10 +115,8 @@
             color: white;
         }
 
-        .btn-primary:hover {
+        .btn-primary:active {
             background: #1a6ec4;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(38,136,235,0.3);
         }
 
         .btn-secondary {
@@ -129,14 +124,15 @@
             color: #333;
         }
 
-        .btn-secondary:hover {
-            background: #e0e2e5;
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .result-section {
             background: white;
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
@@ -233,22 +229,17 @@
             padding: 6px 0;
             color: #555;
         }
-
-        .check-icon {
-            color: #4caf50;
-            margin-right: 8px;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <div class="header">
-            <h1 id="userGreeting">Собери свой идеальный компьютер</h1>
-            <p>Выберите комплектующие и проверьте их совместимость</p>
+            <h1 id="userGreeting">Собери свой идеальный ПК</h1>
+            <p>Выберите комплектующие и проверьте совместимость</p>
         </div>
 
         <div class="config-section">
-            <h2>Выбор комплектующих</h2>
+            <h2>Комплектующие</h2>
             
             <div class="component-selector">
                 <label class="component-label" for="cpu">Процессор</label>
@@ -277,9 +268,9 @@
                 <label class="component-label" for="ram">Оперативная память</label>
                 <select id="ram" class="component-select">
                     <option value="">Выберите память</option>
-                    <option value="corsair-16gb" data-price="6990" data-type="DDR4" data-speed="3200">Corsair Vengeance LPX 16GB (2x8GB) - 6 990 ₽</option>
-                    <option value="kingston-32gb" data-price="12990" data-type="DDR4" data-speed="3600">Kingston Fury Beast 32GB (2x16GB) - 12 990 ₽</option>
-                    <option value="gskill-16gb" data-price="8990" data-type="DDR4" data-speed="4000">G.Skill Trident Z 16GB (2x8GB) - 8 990 ₽</option>
+                    <option value="corsair-16gb" data-price="6990" data-type="DDR4" data-speed="3200">Corsair Vengeance LPX 16GB - 6 990 ₽</option>
+                    <option value="kingston-32gb" data-price="12990" data-type="DDR4" data-speed="3600">Kingston Fury Beast 32GB - 12 990 ₽</option>
+                    <option value="gskill-16gb" data-price="8990" data-type="DDR4" data-speed="4000">G.Skill Trident Z 16GB - 8 990 ₽</option>
                 </select>
                 <div class="specs-info" id="ram-specs"></div>
             </div>
@@ -300,8 +291,8 @@
                 <select id="psu" class="component-select">
                     <option value="">Выберите блок питания</option>
                     <option value="corsair-650" data-price="7990" data-wattage="650">Corsair RM650x - 7 990 ₽</option>
-                    <option value="bequiet-750" data-price="10990" data-wattage="750">be quiet! Straight Power 11 750W - 10 990 ₽</option>
-                    <option value="seasonic-850" data-price="13990" data-wattage="850">Seasonic Focus GX-850 - 13 990 ₽</option>
+                    <option value="bequiet-750" data-price="10990" data-wattage="750">be quiet! 750W - 10 990 ₽</option>
+                    <option value="seasonic-850" data-price="13990" data-wattage="850">Seasonic Focus 850W - 13 990 ₽</option>
                 </select>
                 <div class="specs-info" id="psu-specs"></div>
             </div>
@@ -311,68 +302,91 @@
                 <select id="case" class="component-select">
                     <option value="">Выберите корпус</option>
                     <option value="nzxt-h510" data-price="6990" data-maxgpu="381" data-formfactors="ATX,Micro-ATX,Mini-ITX">NZXT H510 - 6 990 ₽</option>
-                    <option value="fractal-meshify" data-price="8990" data-maxgpu="315" data-formfactors="ATX,Micro-ATX,Mini-ITX">Fractal Design Meshify C - 8 990 ₽</option>
+                    <option value="fractal-meshify" data-price="8990" data-maxgpu="315" data-formfactors="ATX,Micro-ATX,Mini-ITX">Fractal Meshify C - 8 990 ₽</option>
                     <option value="coolermaster-q300l" data-price="3990" data-maxgpu="360" data-formfactors="Micro-ATX,Mini-ITX">Cooler Master Q300L - 3 990 ₽</option>
                 </select>
                 <div class="specs-info" id="case-specs"></div>
             </div>
 
             <div class="button-group">
-                <button class="btn btn-primary" id="calculateBtn">Проверить и рассчитать</button>
+                <button class="btn btn-primary" id="calculateBtn">Проверить</button>
                 <button class="btn btn-secondary" id="shareBtn" disabled>Поделиться</button>
             </div>
         </div>
 
         <div class="result-section hidden" id="result">
-            <div class="compatibility-score" id="compatibilityScore">
-                <!-- Здесь будет отображаться оценка совместимости -->
-            </div>
-            
-            <div class="issues-container" id="issuesContainer">
-                <!-- Здесь будут проблемы совместимости -->
-            </div>
-            
+            <div class="compatibility-score" id="compatibilityScore"></div>
+            <div class="issues-container" id="issuesContainer"></div>
             <div class="price-summary">
                 <h3>Итоговая стоимость</h3>
                 <div class="total-price" id="totalPrice">0 ₽</div>
-                <div class="config-summary" id="configSummary">
-                    <!-- Здесь будет список выбранных компонентов -->
-                </div>
+                <div class="config-summary" id="configSummary"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Инициализация VK Bridge
-        function initVK() {
-            try {
-                if (window.VKWebAppBridge) {
-                    window.VKWebAppBridge.send('VKWebAppInit');
-                    console.log('VK Bridge initialized');
-                } else {
-                    console.log('VK Bridge not available, running in browser mode');
-                }
-            } catch(e) {
-                console.log('VK Bridge error:', e);
+        // Ждем загрузку DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('PC Builder App starting...');
+            
+            // Инициализация VK Bridge
+            if (typeof vkBridge !== 'undefined') {
+                console.log('VK Bridge available');
+                
+                vkBridge.send('VKWebAppInit')
+                    .then(() => {
+                        console.log('VK Bridge initialized successfully');
+                        
+                        // Получаем данные пользователя
+                        return vkBridge.send('VKWebAppGetUserInfo');
+                    })
+                    .then(user => {
+                        console.log('User info received:', user);
+                        if (user && user.first_name) {
+                            document.getElementById('userGreeting').textContent = 
+                                `Привет, ${user.first_name}! Собери свой ПК`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('VK Bridge error:', error);
+                    });
+            } else {
+                console.log('Running in browser mode (no VK Bridge)');
             }
-        }
-
-        // Получение данных пользователя
-        async function getUserInfo() {
-            try {
-                if (window.VKWebAppBridge) {
-                    const user = await window.VKWebAppBridge.send('VKWebAppGetUserInfo');
-                    if (user && user.first_name) {
-                        document.getElementById('userGreeting').textContent = 
-                            `Привет, ${user.first_name}! Собери свой идеальный компьютер`;
-                    }
+            
+            // Инициализация обработчиков
+            initializeEventHandlers();
+        });
+        
+        function initializeEventHandlers() {
+            console.log('Initializing event handlers...');
+            
+            // Обработчики для select
+            const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    select.addEventListener('change', updateSpecsInfo);
                 }
-            } catch(e) {
-                console.log('Cannot get user info:', e);
+            });
+            
+            // Кнопка "Проверить"
+            const calcBtn = document.getElementById('calculateBtn');
+            if (calcBtn) {
+                calcBtn.addEventListener('click', calculatePrice);
             }
+            
+            // Кнопка "Поделиться"
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', shareConfig);
+            }
+            
+            console.log('Event handlers initialized');
         }
-
-        // Функция обновления информации о характеристиках
+        
+        // Функция обновления характеристик
         function updateSpecsInfo() {
             const components = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             
@@ -388,17 +402,10 @@
                         case 'cpu':
                             specs.push(`Сокет: ${selectedOption.dataset.socket}`);
                             specs.push(`TDP: ${selectedOption.dataset.tdp}W`);
-                            specs.push(`Память: ${selectedOption.dataset.memory}`);
-                            if (selectedOption.dataset.igpu === 'true') {
-                                specs.push('Встроенная графика: Да');
-                            } else {
-                                specs.push('Встроенная графика: Нет');
-                            }
                             break;
                         case 'motherboard':
                             specs.push(`Сокет: ${selectedOption.dataset.socket}`);
                             specs.push(`Форм-фактор: ${selectedOption.dataset.formfactor}`);
-                            specs.push(`Память: ${selectedOption.dataset.memory}`);
                             break;
                         case 'ram':
                             specs.push(`Тип: ${selectedOption.dataset.type}`);
@@ -412,8 +419,7 @@
                             specs.push(`Мощность: ${selectedOption.dataset.wattage}W`);
                             break;
                         case 'case':
-                            specs.push(`Макс. длина GPU: ${selectedOption.dataset.maxgpu}мм`);
-                            specs.push(`Форм-факторы: ${selectedOption.dataset.formfactors}`);
+                            specs.push(`Макс. GPU: ${selectedOption.dataset.maxgpu}мм`);
                             break;
                     }
                     
@@ -423,8 +429,8 @@
                 }
             });
         }
-
-        // Функция проверки совместимости
+        
+        // Проверка совместимости
         function checkCompatibility() {
             const issues = [];
             const warnings = [];
@@ -501,7 +507,7 @@
                 if (psuWattage < totalTdp) {
                     issues.push({
                         component: 'Блок питания',
-                        message: `Недостаточно мощности: требуется минимум ${totalTdp}W, у вас ${psuWattage}W`,
+                        message: `Недостаточно мощности: требуется минимум ${totalTdp}W`,
                         type: 'error'
                     });
                 } else if (psuWattage < totalTdp * 1.3) {
@@ -513,21 +519,10 @@
                 }
             }
             
-            // Проверка необходимости видеокарты
-            if (cpuSelected.value && !gpuSelected.value) {
-                if (cpuSelected.dataset.igpu === 'false') {
-                    warnings.push({
-                        component: 'Видеокарта',
-                        message: 'Процессор не имеет встроенной графики, необходима дискретная видеокарта',
-                        type: 'warning'
-                    });
-                }
-            }
-            
             return { issues, warnings };
         }
-
-        // Функция расчета стоимости и проверки совместимости
+        
+        // Расчет стоимости и проверка
         function calculatePrice() {
             const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             let totalPrice = 0;
@@ -555,13 +550,9 @@
                 return;
             }
 
-            // Проверка совместимости
             const { issues, warnings } = checkCompatibility();
-            
-            // Расчет оценки совместимости
             const score = Math.max(0, 100 - (issues.length * 30) - (warnings.length * 10));
             
-            // Отображение оценки
             const compatibilityScore = document.getElementById('compatibilityScore');
             let scoreColor, scoreStatus;
             
@@ -587,7 +578,6 @@
                 <div class="score-status">${scoreStatus}</div>
             `;
             
-            // Отображение проблем
             const issuesContainer = document.getElementById('issuesContainer');
             let issuesHtml = '';
             
@@ -623,13 +613,12 @@
             
             issuesContainer.innerHTML = issuesHtml;
             
-            // Отображение стоимости
             document.getElementById('totalPrice').textContent = 
                 totalPrice.toLocaleString('ru-RU') + ' ₽';
             
             const summaryDiv = document.getElementById('configSummary');
             summaryDiv.innerHTML = configSummary.map(item => 
-                `<div><span class="check-icon">✓</span>${item}</div>`
+                `<div>✓ ${item}</div>`
             ).join('');
 
             resultDiv.classList.remove('hidden');
@@ -642,29 +631,20 @@
                 warnings: warnings
             };
             
-            // Активируем кнопку "Поделиться"
             document.getElementById('shareBtn').disabled = false;
         }
-
-        // Функция отправки в VK
+        
+        // Отправка в VK
         async function shareConfig() {
             if (!window.currentConfig) return;
 
             let message = `🖥️ Моя сборка ПК:\n\n${window.currentConfig.summary.join('\n')}\n\n`;
             message += `✅ Совместимость: ${window.currentConfig.score} баллов\n`;
-            
-            if (window.currentConfig.issues.length > 0) {
-                message += `\n⚠️ Проблемы:\n`;
-                window.currentConfig.issues.forEach(issue => {
-                    message += `• ${issue.message}\n`;
-                });
-            }
-            
-            message += `\n💰 Итого: ${window.currentConfig.totalPrice.toLocaleString('ru-RU')} ₽`;
+            message += `💰 Итого: ${window.currentConfig.totalPrice.toLocaleString('ru-RU')} ₽`;
 
             try {
-                if (window.VKWebAppBridge) {
-                    await window.VKWebAppBridge.send('VKWebAppShare', {
+                if (typeof vkBridge !== 'undefined') {
+                    await vkBridge.send('VKWebAppShare', {
                         link: message
                     });
                 } else {
@@ -675,33 +655,6 @@
                 prompt('Скопируйте вашу конфигурацию:', message);
             }
         }
-
-        // Привязываем обработчики событий
-        document.addEventListener('DOMContentLoaded', function() {
-            initVK();
-            getUserInfo();
-            
-            // Добавляем обработчики изменения для обновления характеристик
-            const selects = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    select.addEventListener('change', updateSpecsInfo);
-                }
-            });
-            
-            const calcBtn = document.getElementById('calculateBtn');
-            if (calcBtn) {
-                calcBtn.addEventListener('click', calculatePrice);
-            }
-            
-            const shareBtn = document.getElementById('shareBtn');
-            if (shareBtn) {
-                shareBtn.addEventListener('click', shareConfig);
-            }
-            
-            console.log('Конфигуратор ПК загружен!');
-        });
     </script>
 </body>
 </html>

@@ -1204,6 +1204,7 @@
             let message = `🖥️ Моя сборка ПК:\n\n${window.currentConfig.summary.join('\n')}\n\n`;
             message += `✅ Совместимость: ${window.currentConfig.score} баллов\n`;
             message += `💰 Итого: ${formatPrice(window.currentConfig.totalPrice)}`;
+            message += `\n\nСобрано с помощью термопаст.рф`;
             
             try {
                 if (typeof vkBridge !== 'undefined') {

@@ -578,6 +578,123 @@
             font-size: 14px;
         }
 
+        /* Custom Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .modal-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .modal-button-primary:hover {
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+
+        .modal-button-secondary {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .modal-button-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 3000;
+            animation: toastIn 0.3s ease-out;
+            box-shadow: var(--shadow-lg);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .app-container {
@@ -635,7 +752,6 @@
         <div class="config-section">
             <div class="section-title">Комплектующие</div>
             
-            <!-- Здесь будут динамически созданы селекторы -->
             <div id="componentsContainer"></div>
 
             <div class="button-group">
@@ -657,14 +773,92 @@
     </div>
 
     <script>
+        // ID приложения VK
+        const APP_ID = '54744057';
+        
+        // Функция показа кастомного модального окна
+        function showCustomModal(title, message, buttons = [{ text: 'OK', type: 'primary', action: 'ok' }]) {
+            return new Promise((resolve) => {
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                
+                const content = document.createElement('div');
+                content.className = 'modal-content';
+                
+                const titleEl = document.createElement('div');
+                titleEl.className = 'modal-title';
+                titleEl.textContent = title;
+                
+                const messageEl = document.createElement('div');
+                messageEl.className = 'modal-message';
+                messageEl.textContent = message;
+                
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.className = 'modal-buttons';
+                
+                buttons.forEach(button => {
+                    const btn = document.createElement('button');
+                    btn.className = `modal-button modal-button-${button.type}`;
+                    btn.textContent = button.text;
+                    btn.addEventListener('click', () => {
+                        document.body.removeChild(overlay);
+                        resolve(button.action);
+                    });
+                    buttonsContainer.appendChild(btn);
+                });
+                
+                content.appendChild(titleEl);
+                content.appendChild(messageEl);
+                content.appendChild(buttonsContainer);
+                overlay.appendChild(content);
+                
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        document.body.removeChild(overlay);
+                        resolve('close');
+                    }
+                });
+                
+                document.body.appendChild(overlay);
+            });
+        }
+        
+        // Функция показа toast-уведомления
+        function showToast(message, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    document.body.removeChild(toast);
+                }
+            }, duration);
+        }
+        
+        // Функция копирования текста
+        async function copyToClipboard(text) {
+            try {
+                if (typeof vkBridge !== 'undefined') {
+                    await vkBridge.send('VKWebAppCopyText', { text: text });
+                    return true;
+                } else {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                }
+            } catch(e) {
+                console.error('Copy error:', e);
+                return false;
+            }
+        }
+        
         // Ждем загрузку DOM
         document.addEventListener('DOMContentLoaded', function() {
             console.log('PC Builder App starting...');
             
-            // Создаем селекторы из components.js
             createComponentSelectors();
             
-            // Инициализация VK Bridge
             if (typeof vkBridge !== 'undefined') {
                 console.log('VK Bridge available');
                 
@@ -690,7 +884,6 @@
             initializeEventHandlers();
         });
         
-        // Функция создания селекторов с поиском
         function createComponentSelectors() {
             const container = document.getElementById('componentsContainer');
             
@@ -712,12 +905,10 @@
                 label.htmlFor = component.id;
                 label.textContent = component.label;
                 
-                // Создаем кастомный дропдаун
                 const dropdownDiv = document.createElement('div');
                 dropdownDiv.className = 'custom-dropdown';
                 dropdownDiv.id = `dropdown-${component.id}`;
                 
-                // Кнопка дропдауна
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.className = 'dropdown-button';
@@ -736,12 +927,10 @@
                 button.appendChild(buttonText);
                 button.appendChild(arrow);
                 
-                // Меню дропдауна
                 const menu = document.createElement('div');
                 menu.className = 'dropdown-menu';
                 menu.id = `menu-${component.id}`;
                 
-                // Поиск
                 const searchDiv = document.createElement('div');
                 searchDiv.className = 'dropdown-search';
                 
@@ -753,12 +942,10 @@
                 
                 searchDiv.appendChild(searchInput);
                 
-                // Опции
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'dropdown-options';
                 optionsDiv.id = `options-${component.id}`;
                 
-                // Добавляем опции
                 component.data.forEach(item => {
                     const option = document.createElement('div');
                     option.className = 'dropdown-option';
@@ -776,7 +963,6 @@
                     option.appendChild(optionName);
                     option.appendChild(optionPrice);
                     
-                    // Сохраняем данные компонента
                     option.dataset.componentData = JSON.stringify(item);
                     
                     optionsDiv.appendChild(option);
@@ -798,21 +984,16 @@
                 
                 container.appendChild(selectorDiv);
                 
-                // Добавляем обработчики событий
                 setupDropdownEvents(component.id);
             });
         }
         
-        // Настройка событий для дропдауна
         function setupDropdownEvents(componentId) {
             const button = document.getElementById(`button-${componentId}`);
             const menu = document.getElementById(`menu-${componentId}`);
             const searchInput = document.getElementById(`search-${componentId}`);
             const optionsDiv = document.getElementById(`options-${componentId}`);
-            const buttonText = document.getElementById(`button-text-${componentId}`);
-            const arrow = document.getElementById(`arrow-${componentId}`);
             
-            // Открытие/закрытие дропдауна
             button.addEventListener('click', function(e) {
                 e.stopPropagation();
                 closeAllDropdowns(componentId);
@@ -822,15 +1003,12 @@
                     closeDropdown(componentId);
                 } else {
                     openDropdown(componentId);
-                    // Очищаем поиск при открытии
                     searchInput.value = '';
                     filterOptions(componentId, '');
-                    // Фокусируемся на поиске
                     setTimeout(() => searchInput.focus(), 100);
                 }
             });
             
-            // Поиск
             searchInput.addEventListener('input', function() {
                 filterOptions(componentId, this.value);
             });
@@ -839,7 +1017,6 @@
                 e.stopPropagation();
             });
             
-            // Выбор опции
             optionsDiv.addEventListener('click', function(e) {
                 const option = e.target.closest('.dropdown-option');
                 if (option) {
@@ -847,13 +1024,11 @@
                 }
             });
             
-            // Закрытие при клике вне дропдауна
             document.addEventListener('click', function() {
                 closeDropdown(componentId);
             });
         }
         
-        // Открытие дропдауна
         function openDropdown(componentId) {
             const menu = document.getElementById(`menu-${componentId}`);
             const button = document.getElementById(`button-${componentId}`);
@@ -864,7 +1039,6 @@
             arrow.classList.add('open');
         }
         
-        // Закрытие дропдауна
         function closeDropdown(componentId) {
             const menu = document.getElementById(`menu-${componentId}`);
             const button = document.getElementById(`button-${componentId}`);
@@ -875,7 +1049,6 @@
             arrow.classList.remove('open');
         }
         
-        // Закрытие всех дропдаунов
         function closeAllDropdowns(exceptId) {
             const allDropdowns = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'case'];
             allDropdowns.forEach(id => {
@@ -885,7 +1058,6 @@
             });
         }
         
-        // Фильтрация опций
         function filterOptions(componentId, query) {
             const optionsDiv = document.getElementById(`options-${componentId}`);
             const options = optionsDiv.querySelectorAll('.dropdown-option');
@@ -904,7 +1076,6 @@
                 }
             });
             
-            // Показываем сообщение, если ничего не найдено
             let emptyMessage = optionsDiv.querySelector('.dropdown-empty');
             if (!emptyMessage) {
                 emptyMessage = document.createElement('div');
@@ -920,36 +1091,28 @@
             }
         }
         
-        // Выбор опции
         function selectOption(componentId, option) {
             const buttonText = document.getElementById(`button-text-${componentId}`);
             const optionsDiv = document.getElementById(`options-${componentId}`);
             const optionData = JSON.parse(option.dataset.componentData);
             
-            // Обновляем текст кнопки
             buttonText.textContent = optionData.name;
             buttonText.classList.remove('dropdown-button-placeholder');
             
-            // Убираем выделение со всех опций
             optionsDiv.querySelectorAll('.dropdown-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
-            // Выделяем выбранную опцию
             option.classList.add('selected');
             
-            // Закрываем дропдаун
             closeDropdown(componentId);
             
-            // Обновляем характеристики
             updateSpecsInfo();
             
-            // Сохраняем выбранный компонент
             window.selectedComponents = window.selectedComponents || {};
             window.selectedComponents[componentId] = optionData;
         }
         
-        // Обновление характеристик
         function updateSpecsInfo() {
             if (!window.selectedComponents) return;
             
@@ -1015,7 +1178,6 @@
             
             const selected = window.selectedComponents || {};
             
-            // Проверка CPU и материнской платы
             if (selected.cpu && selected.motherboard) {
                 if (selected.cpu.socket !== selected.motherboard.socket) {
                     issues.push({
@@ -1026,7 +1188,6 @@
                 }
             }
             
-            // Проверка материнской платы и корпуса
             if (selected.motherboard && selected.case) {
                 if (!selected.case.formFactors.includes(selected.motherboard.formFactor)) {
                     issues.push({
@@ -1037,7 +1198,6 @@
                 }
             }
             
-            // Проверка оперативной памяти
             if (selected.ram && selected.motherboard) {
                 if (selected.ram.type !== selected.motherboard.memoryType) {
                     issues.push({
@@ -1048,7 +1208,6 @@
                 }
             }
             
-            // Проверка видеокарты и корпуса
             if (selected.gpu && selected.case) {
                 if (selected.gpu.length > selected.case.maxGpuLength) {
                     issues.push({
@@ -1059,7 +1218,6 @@
                 }
             }
             
-            // Проверка блока питания
             if (selected.psu && selected.cpu && selected.gpu) {
                 const totalTdp = selected.cpu.tdp + selected.gpu.tdp + 100;
                 
@@ -1081,7 +1239,7 @@
             return { issues, warnings };
         }
         
-        function calculatePrice() {
+        async function calculatePrice() {
             console.log('calculatePrice called');
             
             const selected = window.selectedComponents || {};
@@ -1090,6 +1248,7 @@
             let totalPrice = 0;
             let configSummary = [];
             let allSelected = true;
+            let missingComponents = [];
             
             requiredComponents.forEach(componentId => {
                 if (selected[componentId]) {
@@ -1097,13 +1256,26 @@
                     configSummary.push(selected[componentId].name);
                 } else {
                     allSelected = false;
+                    const componentNames = {
+                        'cpu': 'Процессор',
+                        'motherboard': 'Материнская плата',
+                        'ram': 'Оперативная память',
+                        'gpu': 'Видеокарта',
+                        'psu': 'Блок питания',
+                        'case': 'Корпус'
+                    };
+                    missingComponents.push(componentNames[componentId]);
                 }
             });
             
             const resultDiv = document.getElementById('result');
             
             if (!allSelected) {
-                alert('Пожалуйста, выберите все комплектующие');
+                await showCustomModal(
+                    'Не все компоненты выбраны',
+                    `Пожалуйста, выберите: ${missingComponents.join(', ')}`,
+                    [{ text: 'Хорошо', type: 'primary', action: 'ok' }]
+                );
                 resultDiv.classList.add('hidden');
                 return;
             }
@@ -1196,27 +1368,74 @@
             };
             
             document.getElementById('shareBtn').disabled = false;
+            
+            // Плавная прокрутка к результату
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
         async function shareConfig() {
             if (!window.currentConfig) return;
             
-            let message = `🖥️ Моя сборка ПК:\n\n${window.currentConfig.summary.join('\n')}\n\n`;
-            message += `✅ Совместимость: ${window.currentConfig.score} баллов\n`;
-            message += `💰 Итого: ${formatPrice(window.currentConfig.totalPrice)}`;
-            message += `\n\nСобрано с помощью термопаст.рф`;
+            let message = `🖥️ Моя сборка ПК:\n\n`;
+            message += window.currentConfig.summary.map(item => `• ${item}`).join('\n');
+            message += `\n\n✅ Совместимость: ${window.currentConfig.score} баллов`;
+            message += `\n💰 Итого: ${formatPrice(window.currentConfig.totalPrice)}`;
+            message += `\n\n🔧 Собрано с помощью термопаст.рф`;
+            
+            console.log('Sharing message:', message);
             
             try {
                 if (typeof vkBridge !== 'undefined') {
-                    await vkBridge.send('VKWebAppShare', {
-                        link: message
+                    console.log('VK Bridge available, trying to share');
+                    
+                    await vkBridge.send('VKWebAppShowWallPostBox', {
+                        message: message,
+                        attachments: ''
                     });
+                    
                 } else {
-                    prompt('Скопируйте вашу конфигурацию:', message);
+                    console.log('Not in VK, showing modal');
+                    
+                    const action = await showCustomModal(
+                        'Поделиться сборкой',
+                        'Скопируйте текст сборки и отправьте его в сообщении',
+                        [
+                            { text: 'Скопировать', type: 'primary', action: 'copy' },
+                            { text: 'Отмена', type: 'secondary', action: 'cancel' }
+                        ]
+                    );
+                    
+                    if (action === 'copy') {
+                        const copied = await copyToClipboard(message);
+                        if (copied) {
+                            showToast('Конфигурация скопирована!');
+                        } else {
+                            await showCustomModal(
+                                'Ошибка',
+                                'Не удалось скопировать текст. Пожалуйста, скопируйте вручную.',
+                                [{ text: 'OK', type: 'primary', action: 'ok' }]
+                            );
+                        }
+                    }
                 }
             } catch(e) {
-                console.log('Share error:', e);
-                prompt('Скопируйте вашу конфигурацию:', message);
+                console.error('Share error:', e);
+                
+                const action = await showCustomModal(
+                    'Поделиться сборкой',
+                    'Не удалось открыть окно отправки. Хотите скопировать текст сборки?',
+                    [
+                        { text: 'Скопировать', type: 'primary', action: 'copy' },
+                        { text: 'Отмена', type: 'secondary', action: 'cancel' }
+                    ]
+                );
+                
+                if (action === 'copy') {
+                    const copied = await copyToClipboard(message);
+                    if (copied) {
+                        showToast('Конфигурация скопирована!');
+                    }
+                }
             }
         }
     </script>

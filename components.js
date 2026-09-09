@@ -2,41 +2,118 @@
 
 const componentsData = {
     cpus: [
+        // === Бюджетный сегмент (офис, учеба, простые задачи) ===
         {
-            id: 'CPU1',
-            name: 'Intel Core i5-12400F',
-            price: 18990,
+            id: 'CPU5',
+            name: 'Intel Celeron G5905',
+            price: 4990,
+            socket: 'LGA1200',
+            tdp: 58,
+            memoryType: 'DDR4',
+            integratedGraphics: true
+        },
+        {
+            id: 'CPU6',
+            name: 'AMD Athlon 3000G',
+            price: 5990,
+            socket: 'AM4',
+            tdp: 35,
+            memoryType: 'DDR4',
+            integratedGraphics: true
+        },
+        {
+            id: 'CPU7',
+            name: 'Intel Core i3-12100F',
+            price: 8990,
+            socket: 'LGA1700',
+            tdp: 58,
+            memoryType: 'DDR4',
+            integratedGraphics: false
+        },
+        {
+            id: 'CPU8',
+            name: 'AMD Ryzen 5 5500',
+            price: 10990,
+            socket: 'AM4',
+            tdp: 65,
+            memoryType: 'DDR4',
+            integratedGraphics: false
+        },
+
+        // === Средний сегмент (игры, работа) ===
+        {
+            id: 'CPU9',
+            name: 'Intel Core i5-13400F',
+            price: 20990,
             socket: 'LGA1700',
             tdp: 65,
             memoryType: 'DDR4',
             integratedGraphics: false
         },
         {
-            id: 'CPU2',
-            name: 'Intel Core i7-12700K',
-            price: 31990,
+            id: 'CPU10',
+            name: 'AMD Ryzen 7 5700X',
+            price: 18990,
+            socket: 'AM4',
+            tdp: 65,
+            memoryType: 'DDR4',
+            integratedGraphics: false
+        },
+        {
+            id: 'CPU11',
+            name: 'Intel Core i5-13600K',
+            price: 29990,
             socket: 'LGA1700',
             tdp: 125,
             memoryType: 'DDR4',
             integratedGraphics: true
         },
         {
-            id: 'CPU3',
-            name: 'AMD Ryzen 5 5600X',
-            price: 15990,
-            socket: 'AM4',
-            tdp: 65,
+            id: 'CPU12',
+            name: 'AMD Ryzen 7 7700X',
+            price: 31990,
+            socket: 'AM5',
+            tdp: 105,
+            memoryType: 'DDR5',
+            integratedGraphics: true
+        },
+
+        // === Высокий сегмент (тяжелые игры, монтаж, стриминг) ===
+        {
+            id: 'CPU13',
+            name: 'Intel Core i7-13700K',
+            price: 39990,
+            socket: 'LGA1700',
+            tdp: 125,
             memoryType: 'DDR4',
-            integratedGraphics: false
+            integratedGraphics: true
         },
         {
-            id: 'CPU4',
-            name: 'AMD Ryzen 7 5800X3D',
-            price: 28990,
-            socket: 'AM4',
-            tdp: 105,
+            id: 'CPU14',
+            name: 'AMD Ryzen 9 7900X',
+            price: 44990,
+            socket: 'AM5',
+            tdp: 170,
+            memoryType: 'DDR5',
+            integratedGraphics: true
+        },
+        {
+            id: 'CPU15',
+            name: 'Intel Core i9-13900K',
+            price: 55990,
+            socket: 'LGA1700',
+            tdp: 125,
             memoryType: 'DDR4',
-            integratedGraphics: false
+            integratedGraphics: true
+        },
+        {
+            id: 'CPU16',
+            name: 'AMD Ryzen 9 7950X',
+            price: 57990,
+            socket: 'AM5',
+            tdp: 170,
+            memoryType: 'DDR5',
+            integratedGraphics: true
         }
         // Добавляйте новые процессоры здесь
     ],
